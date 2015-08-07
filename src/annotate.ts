@@ -8,7 +8,8 @@ export enum MetadataType {
 	INJECT,
 	SERVICE,
 	DIRECTIVE,
-	VIEW
+	VIEW,
+	ROUTE_CONFIG
 }
 
 export function annotate(data: Annotation): void {		

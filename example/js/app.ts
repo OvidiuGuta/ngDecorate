@@ -16,14 +16,7 @@ import {bootstrap} from 'ngDecorate/ngDecorate';
  * @type {angular.Module}
  */
 angular.module('todomvc', ['ui.router'])
-	.config(['$stateProvider', '$urlRouterProvider', ($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) => {
-		$stateProvider			
-		    .state('home', {
-			    url: '/home/:filter',
-			    templateUrl: '../templates/todoApp.html',
-				controller: 'TodoCtrl',
-				controllerAs: 'TodoCtrl'
-		    })
+	.config(['$urlRouterProvider', ($urlRouterProvider: angular.ui.IUrlRouterProvider) => {
 		$urlRouterProvider.otherwise('/home/');			
 	}])
 	.directive('todoEscape', todoEscape)

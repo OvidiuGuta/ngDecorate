@@ -16,6 +16,10 @@ export class ControllerAnnotation extends AngularAnnotation {
 		this.params = params;
 	}
 	
+	getName(): string {
+		return this.params.name
+	}
+	
 	register(module: angular.IModule) : angular.IModule {
 		this.module = module;
 		this.module.controller(this.params.name, this.target);
