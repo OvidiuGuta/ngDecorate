@@ -2,15 +2,19 @@
 
 Typescript annotations for AngularJS 1.4.x
 
-Future Angular2 style annptations that cand be used with AngularJS 1.4.x
+Future Angular2 style annotations that can be used with AngularJS 1.4.x
 
 ## Installation
 
-This library is a work in progress. Stay tuned! :D
+This library is a work in progress and will be up on npm soon. Stay tuned! :D
 
 ## Usage
 
-This library is a work in progress. Stay tuned! :D
+This library is a work in progress.
+
+For a glimpse into how you will write Angular 1.4.x apps you can check out the [example controller](https://github.com/OvidiuGuta/ngDecorate/blob/master/example/js/controllers/todoCtrl.ts). 
+
+Stay tuned for more soon! :D
 
 ## Contributing
 
