@@ -1,0 +1,41 @@
+<section id="todoapp" ng-controller="TodoCtrl as todoCtrl">
+	<header id="header">
+		<h1>todos</h1>
+		<form id="todo-form" ng-submit="todoCtrl.addTodo()">
+			<input id="new-todo" placeholder="What needs to be done?" ng-model="todoCtrl.newTodo" autofocus>
+		</form>
+	</header>
+	<section id="main" ng-show="todoCtrl.todos.length" ng-cloak>
+		<input id="toggle-all" type="checkbox" ng-model="todoCtrl.allChecked" ng-click="todoCtrl.markAll(allChecked)">
+		<label for="toggle-all">Mark all as complete</label>
+		<ul id="todo-list">
+			<li ng-repeat="todo in todoCtrl.todos | filter:todoCtrl.statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == todoCtrl.editedTodo}">
+				<div class="view">
+					<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="todoCtrl.todoCompleted(todo)">
+					<label ng-dblclick="todoCtrl.editTodo(todo)">{{todo.title}}</label>
+					<button class="destroy" ng-click="todoCtrl.removeTodo(todo)"></button>
+				</div>
+				<form ng-submit="todoCtrl.doneEditing(todo)">
+					<input class="edit" ng-trim="false" ng-model="todo.title" ng-blur="todoCtrl.doneEditing(todo)" todo-escape="todoCtrl.revertEditing(todo)" todo-focus="todo == todoCtrl.editedTodo">
+				</form>
+			</li>
+		</ul>
+	</section>
+	<footer id="footer" ng-show="todoCtrl.todos.length" ng-cloak>
+		<span id="todo-count"><strong>{{todoCtrl.remainingCount}}</strong>
+			<ng-pluralize count="todoCtrl.remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
+		</span>
+		<ul id="filters">
+			<li>
+				<a ng-class="{selected: todoCtrl.location.path() == '/'} " ui-sref="home({filter: 'all'})">All</a>
+			</li>
+			<li>
+				<a ng-class="{selected: todoCtrl.location.path() == '/home/active'}" ui-sref="home({filter: 'active'})">Active</a>
+			</li>
+			<li>
+				<a ng-class="{selected: todoCtrl.location.path() == '/home/completed'}" ui-sref="home({filter: 'completed'})">Completed</a>
+			</li>
+		</ul>
+		<button id="clear-completed" ng-click="todoCtrl.clearCompletedTodos()" ng-show="todoCtrl.remainingCount < todoCtrl.todos.length">Clear completed</button>
+	</footer>
+</section>

@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "dependencies": {
+    "angular": "^1.4.0",
+    "angular-ui-router": "^0.2.15",
+    "awesome-typescript-loader": "^0.8.0",
+    "reflect-metadata": "^0.1.0",
+    "todomvc-app-css": "^1.0.1",
+    "todomvc-common": "^1.0.1"
+  }
+}

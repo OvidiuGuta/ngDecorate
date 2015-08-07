@@ -1,0 +1,13 @@
+######################
+# Root folder
+######################
+/node_modules
+/typings
+/dev
+
+
+######################
+# Example folder
+######################
+/example/node_modules
+/example/build

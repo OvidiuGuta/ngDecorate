@@ -1,0 +1,22 @@
+{
+  "name": "typescrittest",
+  "version": "1.0.0",
+  "description": "Test",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "awesome-typescript-loader": "^0.8.0",
+    "del": "^1.2.0",
+    "dts-generator": "^1.5.0",
+    "gulp": "^3.9.0",
+    "gulp-server-livereload": "^1.4.0",
+    "gulp-util": "^3.0.6",
+    "reflect-metadata": "^0.1.0",
+    "run-sequence": "^1.1.2",
+    "webpack-stream": "^2.0.0"
+  }
+}
