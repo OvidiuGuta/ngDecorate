@@ -7,14 +7,13 @@
 import {Directive, View} from 'ngDecorate/ngDecorate';
 
 @Directive({
-	selector: 'todoEscape',
-	ddo: {}
+	selector: 'todoEscape'
 })
 export class TodoEscape {
-	static $link(scope: angular.IScope, elem: IHtmlElemetn, attrs: any) {
+	static $link(scope: angular.IScope, elem: angular.IAugmentedJQuery, attrs: any) {
 		let ESCAPE_KEY = 27;
 		
-		elem.bind('keydown', function (event) {
+		elem.bind('keydown', function(event: JQueryEventObject) {
 			if (event.keyCode === ESCAPE_KEY) {
 				scope.$apply(attrs.todoEscape);
 			}

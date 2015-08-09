@@ -1,11 +1,11 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular';
 import {annotate, MetadataType} from '../annotate';
-import {AngularAnnotation, IAngularAnnotationOptions} from './AngularAnnotation';
+import {AngularAnnotation} from './AngularAnnotation';
 
-export interface IDirectiveAnnotationOptions extends IAngularAnnotationOptions {
+export interface IDirectiveAnnotationOptions {
 	selector: string;
-	ddo: angular.IDirective;
+	ddo?: angular.IDirective;
 };
 
 export interface DirectiveFunction extends FunctionConstructor {
