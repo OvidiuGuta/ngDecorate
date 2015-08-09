@@ -29,6 +29,8 @@ export class RouteConfigAnnotation extends AngularAnnotation {
 			stateConfig.templateUrl = viewAnnotation.getTemplateUrl();	
 		}
 		
+		viewAnnotation.registerDirectives(module);
+		
 		module.config(['$stateProvider', ($stateProvider: angular.ui.IStateProvider) => {
 			$stateProvider.state(this.params.name, stateConfig);
 		}]);

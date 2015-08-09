@@ -19,7 +19,7 @@ angular.module('todomvc', ['ui.router'])
 	.config(['$urlRouterProvider', ($urlRouterProvider: angular.ui.IUrlRouterProvider) => {
 		$urlRouterProvider.otherwise('/home/');			
 	}])
-	.directive('todoEscape', todoEscape)
+	// .directive('todoEscape', todoEscape)
 	.directive('todoFocus', todoFocus);	
 
 bootstrap(angular.module('todomvc'), TodoCtrl);

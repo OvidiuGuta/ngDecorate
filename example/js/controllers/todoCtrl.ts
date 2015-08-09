@@ -9,6 +9,7 @@
 /// <reference path="../../build/ngDecorate.d.ts" />
 import {Controller, Inject, View, RouteConfig} from 'ngDecorate/ngDecorate';
 import {TodoStorage} from '../services/todoStorage';
+import {TodoEscape} from '../directives/todoEscape';
 
 export interface Todo {
 	title: string;
@@ -26,7 +27,8 @@ export interface Todo {
 	appInjector: [TodoStorage]
 })
 @View({
-	templateUrl: '../templates/todoApp.html'
+	templateUrl: '../templates/todoApp.html',
+	directives: [TodoEscape];
 })
 @Inject('$scope', '$location', '$filter', '$stateParams', 'TodoStorage')
 export class TodoCtrl {

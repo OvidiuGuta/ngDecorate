@@ -19,3 +19,7 @@ export function annotate(data: Annotation): void {
 export function getAnnotation(tag: MetadataType, target: Function): Annotation {
 	return Reflect.getMetadata(tag, target);
 }
+
+export function hasAnnotation(tag: MetadataType, target: Function): boolean {
+	return Reflect.hasMetadata(tag, target);
+}
