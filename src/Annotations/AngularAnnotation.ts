@@ -1,8 +1,8 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular';
 import Annotation from './Annotation';
+import MetadataType from './MetadataType';
 import {InjectAnnotation} from './InjectAnnotation';
-import {MetadataType, getAnnotation} from '../annotate';
 
 export interface IAngularAnnotationOptions  {
 	name: string;
@@ -23,6 +23,6 @@ export class AngularAnnotation extends Annotation {
 	}
 	
 	getInjectAnnotation() : InjectAnnotation {
-		return <InjectAnnotation>getAnnotation(MetadataType.INJECT, this.target);
+		return <InjectAnnotation>Annotation.getAnnotation(MetadataType.INJECT, this.target);
 	}
 }

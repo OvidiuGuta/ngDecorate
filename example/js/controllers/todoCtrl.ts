@@ -10,10 +10,15 @@
 import {Controller, Inject, View, RouteConfig} from 'ngDecorate/ngDecorate';
 import {TodoStorage} from '../services/todoStorage';
 import {TodoEscape} from '../directives/todoEscape';
+import {TodoFocus} from '../directives/todoFocus';
 
 export interface Todo {
 	title: string;
 	completed: boolean;
+}
+
+export interface ITodoStateParams extends angular.ui.IStateParamsService {
+	filter: string
 }
 
 @RouteConfig({
@@ -28,7 +33,7 @@ export interface Todo {
 })
 @View({
 	templateUrl: '../templates/todoApp.html',
-	directives: [TodoEscape];
+	directives: [TodoEscape, TodoFocus]
 })
 @Inject('$scope', '$location', '$filter', '$stateParams', 'TodoStorage')
 export class TodoCtrl {
@@ -43,7 +48,7 @@ export class TodoCtrl {
 	constructor(private $scope: angular.IScope, 
 		private $location: angular.ILocationService, 
 		private $filter: angular.IFilterService,
-		private $stateParams: angular.ui.IStateParamsService, 
+		private $stateParams: ITodoStateParams, 
 		private todoStorage: TodoStorage) {
 		
 		this.todos = todoStorage.get();

@@ -1,10 +1,10 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../typings/angular-ui-router/angular-ui-router.d.ts" />
 import * as angular from 'angular';
+import MetadataType from './MetadataType';
 import {AngularAnnotation, IAngularAnnotationOptions} from './AngularAnnotation';
 import {ControllerAnnotation} from './ControllerAnnotation';
 import {ViewAnnotation} from './ViewAnnotation';
-import {MetadataType, getAnnotation} from '../annotate';
 
 export interface IRouteConfigAnnotationOptions extends IAngularAnnotationOptions {
 	config: angular.ui.IState;
@@ -39,11 +39,11 @@ export class RouteConfigAnnotation extends AngularAnnotation {
 	}
 	
 	getControllerAnnotation(): ControllerAnnotation{
-		return <ControllerAnnotation>getAnnotation(MetadataType.CONTROLLER, this.target);
+		return <ControllerAnnotation>AngularAnnotation.getAnnotation(MetadataType.CONTROLLER, this.target);
 	};
 	
 	getViewAnnotation(): ViewAnnotation{
-		return <ViewAnnotation>getAnnotation(MetadataType.VIEW, this.target);
+		return <ViewAnnotation>AngularAnnotation.getAnnotation(MetadataType.VIEW, this.target);
 	};
 }
 

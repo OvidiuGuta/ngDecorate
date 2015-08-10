@@ -1,6 +1,6 @@
 import Annotation from './Annotation';
+import MetadataType from './MetadataType';
 import {DirectiveAnnotation} from './DirectiveAnnotation';
-import {MetadataType, hasAnnotation, getAnnotation} from '../annotate';
 
 export interface IViewParams {
 	template?: string;
@@ -35,8 +35,8 @@ export class ViewAnnotation extends Annotation {
 	
 	registerDirective(module: angular.IModule, directive: Function) {
 		let annotation: DirectiveAnnotation;
-		if(hasAnnotation(MetadataType.DIRECTIVE, directive)) {
-			annotation = <DirectiveAnnotation> getAnnotation(MetadataType.DIRECTIVE, directive);
+		if(Annotation.hasAnnotation(MetadataType.DIRECTIVE, directive)) {
+			annotation = <DirectiveAnnotation>Annotation.getAnnotation(MetadataType.DIRECTIVE, directive);
 		}
 		
 		annotation.register(module);

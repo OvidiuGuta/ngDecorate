@@ -1,5 +1,5 @@
 import Annotation from './Annotation';
-import {MetadataType} from '../annotate';
+import MetadataType from './MetadataType';
 
 export class InjectAnnotation extends Annotation {
 	injectables: string[];
@@ -10,6 +10,9 @@ export class InjectAnnotation extends Annotation {
 	}
 }
 
+export interface IAnnotatedMethod extends FunctionConstructor {
+	[key : string]: Function
+}
 
 export function Inject(...injectables: string[]) {
 	return (...args: any[]) => {
@@ -18,7 +21,7 @@ export function Inject(...injectables: string[]) {
 			case 1:
 				Constructor.$inject = injectables;
 				new InjectAnnotation(injectables, Constructor).attach();
-				break;
+				break;				
 			default:
 				throw new Error("Decorators are only valid on class declarations!");
 		}

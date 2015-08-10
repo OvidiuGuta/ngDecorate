@@ -1,7 +1,7 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular';
-import {annotate, getAnnotation, MetadataType} from '../annotate';
 import {AngularAnnotation, IAngularAnnotationOptions} from './AngularAnnotation';
+import MetadataType from './MetadataType';
 import {ServiceAnnotation} from './ServiceAnnotation';
 
 export interface IControllerAnnotationOptions extends IAngularAnnotationOptions {
@@ -31,7 +31,7 @@ export class ControllerAnnotation extends AngularAnnotation {
 	
 	registerServices() {
 		for(let target of this.params.appInjector) {
-			let serviceAnnotation = <ServiceAnnotation>getAnnotation(MetadataType.SERVICE, target);
+			let serviceAnnotation = <ServiceAnnotation>AngularAnnotation.getAnnotation(MetadataType.SERVICE, target);
 			serviceAnnotation.register(this.module);
 		}
 	}
