@@ -5,22 +5,7 @@
 			<input id="new-todo" placeholder="What needs to be done?" ng-model="TodoCtrl.newTodo" autofocus>
 		</form>
 	</header>
-	<section id="main" ng-show="TodoCtrl.todos.length" ng-cloak>
-		<input id="toggle-all" type="checkbox" ng-model="TodoCtrl.allChecked" ng-click="TodoCtrl.markAll(allChecked)">
-		<label for="toggle-all">Mark all as complete</label>
-		<ul id="todo-list">
-			<li ng-repeat="todo in TodoCtrl.todos | filter:TodoCtrl.statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == TodoCtrl.editedTodo}">
-				<div class="view">
-					<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="TodoCtrl.todoCompleted(todo)">
-					<label ng-dblclick="TodoCtrl.editTodo(todo)">{{todo.title}}</label>
-					<button class="destroy" ng-click="TodoCtrl.removeTodo(todo)"></button>
-				</div>
-				<form ng-submit="TodoCtrl.doneEditing(todo)">
-					<input class="edit" ng-trim="false" ng-model="todo.title" ng-blur="TodoCtrl.doneEditing(todo)" todo-escape="TodoCtrl.revertEditing(todo)" todo-focus="todo == TodoCtrl.editedTodo">
-				</form>
-			</li>
-		</ul>
-	</section>
+	<todo-list todos="TodoCtrl.todos" filter="TodoCtrl.statusFilter" remaining-count="TodoCtrl.remainingCount"></todo-list>
 	<footer id="footer" ng-show="TodoCtrl.todos.length" ng-cloak>
 		<span id="todo-count"><strong>{{TodoCtrl.remainingCount}}</strong>
 			<ng-pluralize count="TodoCtrl.remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>

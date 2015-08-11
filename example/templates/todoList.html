@@ -1,0 +1,16 @@
+<section id="main" ng-show="TodoList.todos.length" ng-cloak>
+	<input id="toggle-all" type="checkbox" ng-model="TodoList.allChecked" ng-click="TodoList.markAll(TodoList.allChecked)">
+	<label for="toggle-all">Mark all as complete</label>
+	<ul id="todo-list">
+		<li ng-repeat="todo in TodoList.todos | filter:TodoList.filter track by $index" ng-class="{completed: todo.completed, editing: todo == TodoList.editedTodo}">
+			<div class="view">
+				<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="TodoList.todoCompleted(todo)">
+				<label ng-dblclick="TodoList.editTodo(todo)">{{todo.title}}</label>
+				<button class="destroy" ng-click="TodoList.removeTodo(todo)"></button>
+			</div>
+			<form ng-submit="TodoList.doneEditing(todo)">
+				<input class="edit" ng-trim="false" ng-model="todo.title" ng-blur="TodoList.doneEditing(todo)" todo-escape="TodoList.revertEditing(todo)" todo-focus="todo == TodoList.editedTodo">
+			</form>
+		</li>
+	</ul>
+</section>
