@@ -1,17 +1,18 @@
 import Annotation from './Annotation';
 import MetadataType from './MetadataType';
 import {DirectiveAnnotation} from './DirectiveAnnotation';
+import {IViewAnnotationOptions} from './AnnotationOptions/IViewAnnotationOptions'
 
-export interface IViewParams {
-	template?: string;
-	templateUrl?: string;
-	directives?: Function[];  
-}
+// export interface IViewParams {
+// 	template?: string;
+// 	templateUrl?: string;
+// 	directives?: Function[];  
+// }
 
 export class ViewAnnotation extends Annotation {
-	private params: IViewParams;
+	private params: IViewAnnotationOptions;
 	
-	constructor(params: IViewParams, classConstructor: Function) {
+	constructor(params: IViewAnnotationOptions, classConstructor: Function) {
 		super(MetadataType.VIEW, classConstructor);
 		
 		this.params = params;
@@ -43,7 +44,7 @@ export class ViewAnnotation extends Annotation {
 	}
 }
 
-export function View(options: IViewParams) {
+export function View(options: IViewAnnotationOptions) {
 	return Annotation.getClassDecorator((Constructor: Function) => {
 		new ViewAnnotation(options, Constructor).attach();
 	});

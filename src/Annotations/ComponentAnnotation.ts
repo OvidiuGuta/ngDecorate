@@ -4,13 +4,7 @@ import MetadataType from './MetadataType';
 import {AngularAnnotation} from './AngularAnnotation';
 import {ViewAnnotation} from './ViewAnnotation';
 import {ServiceAnnotation} from './ServiceAnnotation';
-
-export interface IComponentAnnotationOptions {
-	selector: string;
-	appInjector?: Function[];
-	staticInject?: string[];
-	ddo?: angular.IDirective;
-};
+import {IComponentAnnotationOptions} from './AnnotationOptions/IComponentAnnotationOptions';
 
 export interface ComponentFunction extends FunctionConstructor {
 	[key: string]: Function;

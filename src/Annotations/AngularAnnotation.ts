@@ -4,10 +4,10 @@ import Annotation from './Annotation';
 import MetadataType from './MetadataType';
 import {InjectAnnotation} from './InjectAnnotation';
 
-export interface IAngularAnnotationOptions  {
-	name: string;
-	type?: MetadataType;
-}
+// export interface IAngularAnnotationOptions  {
+// 	name: string;
+// 	type?: MetadataType;
+// }
 
 export class AngularAnnotation extends Annotation {
 	protected injectAnnotation: InjectAnnotation;

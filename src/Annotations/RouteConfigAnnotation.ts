@@ -2,13 +2,10 @@
 /// <reference path="../../typings/angular-ui-router/angular-ui-router.d.ts" />
 import * as angular from 'angular';
 import MetadataType from './MetadataType';
-import {AngularAnnotation, IAngularAnnotationOptions} from './AngularAnnotation';
+import {AngularAnnotation} from './AngularAnnotation';
 import {ControllerAnnotation} from './ControllerAnnotation';
 import {ViewAnnotation} from './ViewAnnotation';
-
-export interface IRouteConfigAnnotationOptions extends IAngularAnnotationOptions {
-	config: angular.ui.IState;
-}
+import {IRouteConfigAnnotationOptions} from './AnnotationOptions/IRouteConfigAnnotationOptions';
 
 export class RouteConfigAnnotation extends AngularAnnotation {
 	private params: IRouteConfigAnnotationOptions;

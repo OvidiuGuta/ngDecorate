@@ -1,12 +1,13 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular';
-import {AngularAnnotation, IAngularAnnotationOptions} from './AngularAnnotation';
+import {AngularAnnotation} from './AngularAnnotation';
 import MetadataType from './MetadataType';
 import {ServiceAnnotation} from './ServiceAnnotation';
+import {IControllerAnnotationOptions} from './AnnotationOptions/IControllerAnnotationOptions';
 
-export interface IControllerAnnotationOptions extends IAngularAnnotationOptions {
-	appInjector: Function[];
-};
+// export interface IControllerAnnotationOptions extends IAngularAnnotationOptions {
+// 	appInjector: Function[];
+// };
 
 export class ControllerAnnotation extends AngularAnnotation {
 	private module: angular.IModule;

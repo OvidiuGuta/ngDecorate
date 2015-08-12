@@ -1,9 +1,5 @@
 import MetadataType from './MetadataType';
 
-export interface IAnnotation {
-    new (type: MetadataType, target: Function): Annotation;
-}
-
 export default class Annotation {
 	target: Function;
 	type: MetadataType;

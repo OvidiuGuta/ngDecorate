@@ -2,18 +2,13 @@
 import * as angular from 'angular';
 import MetadataType from './MetadataType';
 import {AngularAnnotation} from './AngularAnnotation';
+import {IDirectiveAnnotationOptions} from './AnnotationOptions/IDirectiveAnnotationOptions';
 
-export interface IDirectiveAnnotationOptions {
-	selector: string;
-	staticInject?: string[];
-	ddo?: angular.IDirective;
-};
-
-export interface DirectiveFunction extends FunctionConstructor {
-	[key: string]: Function;
-	$compile?: Function;
-	$link?: Function;compile?: Function;
-}
+// export interface IDirectiveAnnotationOptions {
+// 	selector: string;
+// 	staticInject?: string[];
+// 	ddo?: angular.IDirective;
+// };
 
 export class DirectiveAnnotation extends AngularAnnotation {
 	private module: angular.IModule;

@@ -1,11 +1,8 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular';
 import MetadataType from './MetadataType';
-import {AngularAnnotation, IAngularAnnotationOptions} from './AngularAnnotation';
-
-export interface IServiceAnnotationOptions extends IAngularAnnotationOptions {
-	factory: boolean;
-};
+import {AngularAnnotation} from './AngularAnnotation';
+import {IServiceAnnotationOptions} from './AnnotationOptions/IServiceAnnotationOptions';
 
 export interface FactoryFunction extends FunctionConstructor {
 	$factory?: Function;
