@@ -47,16 +47,8 @@ export class RouteConfigAnnotation extends AngularAnnotation {
 	};
 }
 
-
 export function RouteConfig(options: IRouteConfigAnnotationOptions) {
-	return (...args: any[]) => {
-		let Constructor: Function = args[0];
-		switch(args.length) {
-			case 1:
-				new RouteConfigAnnotation(options, Constructor).attach();
-				break;
-			default:
-				throw new Error("Decorators are only valid on class declarations!");
-		}
-	}
+	return AngularAnnotation.getClassDecorator((Constructor: Function) => {
+		new RouteConfigAnnotation(options, Constructor).attach();
+	});
 }

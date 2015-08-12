@@ -12,7 +12,7 @@ export class ViewAnnotation extends Annotation {
 	private params: IViewParams;
 	
 	constructor(params: IViewParams, classConstructor: Function) {
-		super(classConstructor, MetadataType.VIEW);
+		super(MetadataType.VIEW, classConstructor);
 		
 		this.params = params;
 	}
@@ -43,16 +43,8 @@ export class ViewAnnotation extends Annotation {
 	}
 }
 
-
 export function View(options: IViewParams) {
-	return (...args: any[]) => {
-		let Constructor: Function = args[0];
-		switch(args.length) {
-			case 1:
-				new ViewAnnotation(options, Constructor).attach();
-				break;
-			default:
-				throw new Error("Decorators are only valid on class declarations!");
-		}
-	}
+	return Annotation.getClassDecorator((Constructor: Function) => {
+		new ViewAnnotation(options, Constructor).attach();
+	});
 }

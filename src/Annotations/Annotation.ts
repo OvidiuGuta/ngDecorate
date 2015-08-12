@@ -1,10 +1,14 @@
 import MetadataType from './MetadataType';
 
+export interface IAnnotation {
+    new (type: MetadataType, target: Function): Annotation;
+}
+
 export default class Annotation {
 	target: Function;
 	type: MetadataType;
 	
-	constructor(target: Function, type: MetadataType) {
+	constructor(type: MetadataType, target: Function) {
 		this.target = target;
 		this.type = type;
 	}
@@ -23,5 +27,18 @@ export default class Annotation {
 	
 	static hasAnnotation(tag: MetadataType, target: Function): boolean {
 		return Reflect.hasMetadata(tag, target);
+	}
+	
+	static getClassDecorator(classDecoratorBody: Function) {
+		return (...args: any[]) => {
+			let Constructor: Function = args[0];
+			switch(args.length) {
+				case 1:
+				  classDecoratorBody.call(this, Constructor);
+				  break;
+				default:
+				  throw new Error("Decorators are only valid on class declarations!");
+			}
+		}
 	}
 }

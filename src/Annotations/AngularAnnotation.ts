@@ -13,7 +13,7 @@ export class AngularAnnotation extends Annotation {
 	protected injectAnnotation: InjectAnnotation;
 	
 	constructor(type: MetadataType, target: Function) {
-		super(target, type);
+		super(type, target);
 		
 		this.injectAnnotation = this.getInjectAnnotation();
 	}

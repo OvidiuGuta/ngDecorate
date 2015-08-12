@@ -69,14 +69,7 @@ export class DirectiveAnnotation extends AngularAnnotation {
 }
 
 export function Directive(options: IDirectiveAnnotationOptions) {
-	return (...args: any[]) => {
-		let Constructor: Function = args[0];
-		switch(args.length) {
-			case 1:
-			  new DirectiveAnnotation(options, Constructor).attach();
-			  break;
-			default:
-			  throw new Error("Decorators are only valid on class declarations!");
-		}
-	}
+	return AngularAnnotation.getClassDecorator((Constructor: Function) => {
+		new DirectiveAnnotation(options, Constructor).attach();
+	});
 }

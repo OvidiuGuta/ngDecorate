@@ -31,7 +31,7 @@ export class TodoList {
 	constructor(private $scope: angular.IScope,
 				private todoStorage: TodoStorage) {
 		this.editedTodo = null;
-		this.allChecked = this.repainingCount === 0;
+		this.allChecked = this.remainingCount === 0;
 		
 		$scope.$watch('TodoList.remainingCount === 0', (val) => {
 			this.allChecked = val;

@@ -32,10 +32,10 @@ export class ServiceAnnotation extends AngularAnnotation {
 		if(this.registered) {
 			return module;
 		}
+		this.registered = true;
 		if(this.params.factory) {
 			return this.registerFactory(module);
 		}
-		this.registered = true;
 		return module.service(this.params.name, this.target);
 	}
 	
@@ -48,14 +48,7 @@ export class ServiceAnnotation extends AngularAnnotation {
 }
 
 export function Service(options: IServiceAnnotationOptions) {
-	return (...args: any[]) => {
-		let Constructor: Function = args[0];
-		switch(args.length) {
-		case 1:
-		  new ServiceAnnotation(options, Constructor).attach();
-		  break;
-		default:
-		  throw new Error("Decorators are only valid on class declarations!");
-		}
-	}
+	return AngularAnnotation.getClassDecorator((Constructor: Function) => {
+		new ServiceAnnotation(options, Constructor).attach();
+	});
 }

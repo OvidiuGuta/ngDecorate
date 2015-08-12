@@ -3,9 +3,11 @@ import * as angular from 'angular';
 import MetadataType from './MetadataType';
 import {AngularAnnotation} from './AngularAnnotation';
 import {ViewAnnotation} from './ViewAnnotation';
+import {ServiceAnnotation} from './ServiceAnnotation';
 
 export interface IComponentAnnotationOptions {
 	selector: string;
+	appInjector?: Function[];
 	staticInject?: string[];
 	ddo?: angular.IDirective;
 };
@@ -35,12 +37,20 @@ export class ComponentAnnotation extends AngularAnnotation {
 			return module;
 		}
 		
+		this.registerServices(module);
 		this.viewAnnotation.registerDirectives(module);	
 		
 		this.registered = true;
 		this.attach();
 		
 		return module.directive(this.params.selector, this.getComponentDefinitionFunction());
+	}
+	
+	registerServices(module: angular.IModule) {
+		for(let target of this.params.appInjector) {
+			let serviceAnnotation = <ServiceAnnotation>AngularAnnotation.getAnnotation(MetadataType.SERVICE, target);
+			serviceAnnotation.register(module);
+		}
 	}
 	
 	private getComponentDefinitionFunction(): angular.IDirectiveFactory {
@@ -82,14 +92,7 @@ export class ComponentAnnotation extends AngularAnnotation {
 }
 
 export function Component(options: IComponentAnnotationOptions) {
-	return (...args: any[]) => {
-		let Constructor: Function = args[0];
-		switch(args.length) {
-			case 1:
-			  new ComponentAnnotation(options, Constructor).attach();
-			  break;
-			default:
-			  throw new Error("Decorators are only valid on class declarations!");
-		}
-	}
+	return AngularAnnotation.getClassDecorator((Constructor: Function) => {
+		new ComponentAnnotation(options, Constructor).attach();
+	});
 }

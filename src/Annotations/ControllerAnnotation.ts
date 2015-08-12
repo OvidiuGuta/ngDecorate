@@ -38,14 +38,7 @@ export class ControllerAnnotation extends AngularAnnotation {
 }
 
 export function Controller(options: IControllerAnnotationOptions) {
-	return (...args: any[]) => {
-		let Constructor: Function = args[0];
-		switch(args.length) {
-		case 1:
-		  new ControllerAnnotation(options, Constructor).attach();
-		  break;
-		default:
-		  throw new Error("Decorators are only valid on class declarations!");
-		}
-	}
+	return AngularAnnotation.getClassDecorator((Constructor: Function) => {
+		new ControllerAnnotation(options, Constructor).attach();
+	});
 }
