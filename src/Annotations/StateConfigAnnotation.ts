@@ -5,22 +5,26 @@ import MetadataType from './MetadataType';
 import {AngularAnnotation} from './AngularAnnotation';
 import {ControllerAnnotation} from './ControllerAnnotation';
 import {ViewAnnotation} from './ViewAnnotation';
-import {IRouteConfigAnnotationOptions} from './AnnotationOptions/IRouteConfigAnnotationOptions';
+import {IStateConfigAnnotationOptions} from './AnnotationOptions/IStateConfigAnnotationOptions';
 
-export class RouteConfigAnnotation extends AngularAnnotation {
-	private params: IRouteConfigAnnotationOptions;
-	constructor(params: IRouteConfigAnnotationOptions, classConstructor: Function) {
-		super(MetadataType.ROUTE_CONFIG, classConstructor);
+export class StateConfigAnnotation extends AngularAnnotation {
+	private params: IStateConfigAnnotationOptions;
+	constructor(params: IStateConfigAnnotationOptions, classConstructor: Function) {
+		super(MetadataType.STATE_CONFIG, classConstructor);
 		
 		this.params = params;
 	}
 	
 	register(module: angular.IModule): angular.IModule {
+		if(this.isRegistered()) {
+			return module;
+		}
+		
 		let stateConfig: angular.ui.IState = this.params.config;
 		
-		stateConfig.controller = stateConfig.controllerAs = this.getControllerAnnotation().getName();
+		stateConfig.controller = stateConfig.controllerAs = ControllerAnnotation.getControllerAnnotation(this.target).getName();
 		
-		let viewAnnotation = this.getViewAnnotation();
+		let viewAnnotation = ViewAnnotation.getViewAnnotation(this.target);
 		stateConfig.template = viewAnnotation.getTemplate();
 		if(!stateConfig.template) {
 			stateConfig.templateUrl = viewAnnotation.getTemplateUrl();	
@@ -28,24 +32,17 @@ export class RouteConfigAnnotation extends AngularAnnotation {
 		
 		viewAnnotation.registerDirectives(module);
 		
+		this.reattach();
 		module.config(['$stateProvider', ($stateProvider: angular.ui.IStateProvider) => {
 			$stateProvider.state(this.params.name, stateConfig);
 		}]);
 		
 		return module;
 	}
-	
-	getControllerAnnotation(): ControllerAnnotation{
-		return <ControllerAnnotation>AngularAnnotation.getAnnotation(MetadataType.CONTROLLER, this.target);
-	};
-	
-	getViewAnnotation(): ViewAnnotation{
-		return <ViewAnnotation>AngularAnnotation.getAnnotation(MetadataType.VIEW, this.target);
-	};
 }
 
-export function RouteConfig(options: IRouteConfigAnnotationOptions) {
+export function StateConfig(options: IStateConfigAnnotationOptions) {
 	return AngularAnnotation.getClassDecorator((Constructor: Function) => {
-		new RouteConfigAnnotation(options, Constructor).attach();
+		new StateConfigAnnotation(options, Constructor).attach();
 	});
 }

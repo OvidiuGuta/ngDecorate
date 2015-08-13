@@ -10,10 +10,6 @@ export class InjectAnnotation extends Annotation {
 	}
 }
 
-export interface IAnnotatedMethod extends FunctionConstructor {
-	[key : string]: Function
-}
-
 export function Inject(...injectables: string[]) {
 	return Annotation.getClassDecorator((Constructor: Function) => {
 		Constructor.$inject = injectables;

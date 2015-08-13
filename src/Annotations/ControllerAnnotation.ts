@@ -5,10 +5,6 @@ import MetadataType from './MetadataType';
 import {ServiceAnnotation} from './ServiceAnnotation';
 import {IControllerAnnotationOptions} from './AnnotationOptions/IControllerAnnotationOptions';
 
-// export interface IControllerAnnotationOptions extends IAngularAnnotationOptions {
-// 	appInjector: Function[];
-// };
-
 export class ControllerAnnotation extends AngularAnnotation {
 	private module: angular.IModule;
 	private params: IControllerAnnotationOptions;
@@ -23,19 +19,19 @@ export class ControllerAnnotation extends AngularAnnotation {
 	
 	register(module: angular.IModule) : angular.IModule {
 		this.module = module;
-		this.module.controller(this.params.name, this.target);
+		if(this.isRegistered()) {
+			return module;
+		}
+		this.reattach();
 		
-		this.registerServices();
+		ServiceAnnotation.registerServices(this.module, this.params.appInjector);
 		
-		return this.module;
+		return this.module.controller(this.params.name, this.target);
 	}
 	
-	registerServices() {
-		for(let target of this.params.appInjector) {
-			let serviceAnnotation = <ServiceAnnotation>AngularAnnotation.getAnnotation(MetadataType.SERVICE, target);
-			serviceAnnotation.register(this.module);
-		}
-	}
+	static getControllerAnnotation(target: Function): ControllerAnnotation{
+		return <ControllerAnnotation>AngularAnnotation.getAnnotation(MetadataType.CONTROLLER, target);
+	};
 }
 
 export function Controller(options: IControllerAnnotationOptions) {

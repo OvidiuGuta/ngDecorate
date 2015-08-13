@@ -33,7 +33,7 @@ export default class Annotation {
 				  classDecoratorBody.call(this, Constructor);
 				  break;
 				default:
-				  throw new Error("Decorators are only valid on class declarations!");
+				  throw new Error('ngDecorate: Decorators are only valid on class declarations!');
 			}
 		}
 	}

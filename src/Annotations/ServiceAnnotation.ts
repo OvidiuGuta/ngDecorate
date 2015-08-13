@@ -12,11 +12,9 @@ export class ServiceAnnotation extends AngularAnnotation {
 	private module: angular.IModule;
 	private params: IServiceAnnotationOptions;
 	private factoryTatarget: FactoryFunction;
-	private registered: boolean;
 	constructor(params: IServiceAnnotationOptions, target: Function) {
 		super(MetadataType.SERVICE, target);
 		this.params = params;
-		this.registered = false;
 		
 		if(this.params.factory) {
 			this.factoryTatarget = <FactoryFunction>target;	
@@ -26,10 +24,10 @@ export class ServiceAnnotation extends AngularAnnotation {
 	}
 	
 	register(module: angular.IModule) : angular.IModule {
-		if(this.registered) {
+		if(this.isRegistered()) {
 			return module;
 		}
-		this.registered = true;
+		this.reattach();
 		if(this.params.factory) {
 			return this.registerFactory(module);
 		}
@@ -41,6 +39,13 @@ export class ServiceAnnotation extends AngularAnnotation {
 			throw new Error(`ngDecorate: Factory class ${this.params.name} must implement static method $factory`);
 		}
 		return module.factory(this.params.name, this.factoryTatarget.$factory);
+	}
+	
+	static registerServices(module: angular.IModule, services: Function[]): void {
+		for(let target of services) {
+			let serviceAnnotation = <ServiceAnnotation>AngularAnnotation.getAnnotation(MetadataType.SERVICE, target);
+			serviceAnnotation.register(module);
+		}
 	}
 }
 

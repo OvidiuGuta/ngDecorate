@@ -7,7 +7,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../build/ngDecorate.d.ts" />
-import {Controller, Inject, View, RouteConfig} from 'ngDecorate/ngDecorate';
+import {Controller, Inject, View, StateConfig} from 'ngDecorate/ngDecorate';
 import {TodoStorage} from '../services/todoStorage';
 import {TodoList} from '../components/todoList';
 
@@ -20,7 +20,7 @@ export interface ITodoStateParams extends angular.ui.IStateParamsService {
 	filter: string
 }
 
-@RouteConfig({
+@StateConfig({
 	name: 'home',
 	config: {
 		url: '/home/:filter'

@@ -2,19 +2,24 @@
 import * as angular from 'angular';
 import MetadataType from './Annotations/MetadataType';
 import {ControllerAnnotation} from './Annotations/ControllerAnnotation';
-import {RouteConfigAnnotation} from './Annotations/RouteConfigAnnotation';
+import {StateConfigAnnotation} from './Annotations/StateConfigAnnotation';
 
 export {Controller} from './Annotations/ControllerAnnotation';
 export {Inject} from './Annotations/InjectAnnotation';
 export {Service} from './Annotations/ServiceAnnotation';
 export {View} from './Annotations/ViewAnnotation';
-export {RouteConfig} from './Annotations/RouteConfigAnnotation';
+export {StateConfig} from './Annotations/StateConfigAnnotation';
 export {Directive} from './Annotations/DirectiveAnnotation';
 export {Component} from './Annotations/ComponentAnnotation';
 
 export function bootstrap(module: angular.IModule, ControllerFunction: Function) : angular.IModule {
-	(<RouteConfigAnnotation>RouteConfigAnnotation.getAnnotation(MetadataType.ROUTE_CONFIG, ControllerFunction)).register(module);
+	if(StateConfigAnnotation.hasAnnotation(MetadataType.STATE_CONFIG, ControllerFunction)) {
+		(<StateConfigAnnotation>StateConfigAnnotation.getAnnotation(MetadataType.STATE_CONFIG, ControllerFunction)).register(module);	
+	}
 	
-	let annotation = <ControllerAnnotation>ControllerAnnotation.getAnnotation(MetadataType.CONTROLLER,  ControllerFunction);
-	return annotation.register(module); 
+	if(!ControllerAnnotation.hasAnnotation(MetadataType.CONTROLLER, ControllerFunction)) {
+		throw new Error('ngDecorate: No conntroller annotation on bootstrap target');
+	}
+	
+	return (<ControllerAnnotation>ControllerAnnotation.getAnnotation(MetadataType.CONTROLLER,  ControllerFunction)).register(module); 
 }

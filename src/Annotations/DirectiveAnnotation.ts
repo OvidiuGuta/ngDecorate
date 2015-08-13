@@ -3,65 +3,40 @@ import * as angular from 'angular';
 import MetadataType from './MetadataType';
 import {AngularAnnotation} from './AngularAnnotation';
 import {IDirectiveAnnotationOptions} from './AnnotationOptions/IDirectiveAnnotationOptions';
+import {IComponentAnnotationOptions} from './AnnotationOptions/IComponentAnnotationOptions';
+import {DirectiveFactory} from './DirectivesFactory';
+import {mixin} from './Util';
 
-// export interface IDirectiveAnnotationOptions {
-// 	selector: string;
-// 	staticInject?: string[];
-// 	ddo?: angular.IDirective;
-// };
-
-export class DirectiveAnnotation extends AngularAnnotation {
+export class DirectiveAnnotation extends AngularAnnotation implements DirectiveFactory {
 	private module: angular.IModule;
 	private params: IDirectiveAnnotationOptions;
-	private registered: boolean;
+	ddo: angular.IDirective;
 	
 	constructor(params: IDirectiveAnnotationOptions, target: Function) {
 		super(MetadataType.DIRECTIVE, target);
 		this.params = params;
-		this.registered = false;
+		this.ddo = {
+			bindToController: true,
+			restrinct: 'AC',
+			scope: true,
+		};
 	}
 	
 	register(module: angular.IModule) : angular.IModule {
-		if(this.registered) {
+		if(this.isRegistered()) {
 			return module;
 		}
 		
-		this.registered = true;
-		this.attach();
+		this.reattach();
 		
-		return module.directive(this.params.selector, this.getDirectiveDefinitionFunction());
+		return module.directive(this.params.selector, this.getDirectiveDefinitionFunction(this.params, this.target));
 	}
 	
-	private getDirectiveDefinitionFunction(): angular.IDirectiveFactory {
-		let target = this.target;
-		let ddo = this.getDDO();
-		let directiveDefinitionFunction = (...injectables: any[]) => {
-			for(let i = 0; i < injectables.length; i++) {
-				let injectableName = directiveDefinitionFunction.$inject[i];
-				(<DirectiveFunction>target)[injectableName] = injectables[i];
-			}
-			return ddo;
-		}
-		
-		directiveDefinitionFunction.$inject = this.params.staticInject;
-		
-		return directiveDefinitionFunction;
-	}
-	
-	private getDDO(): angular.IDirective {
-		let ddo: angular.IDirective = angular.extend({}, {
-				bindToController: true,
-				compile: (<DirectiveFunction>this.target).$compile,
-				controller: this.target,
-				controllerAs: name,
-				link: (<DirectiveFunction>this.target).$link,
-				restrinct: 'AC',
-				scope: true,
-			}, this.params.ddo);
-			
-		return ddo;
-	}
+	// From DirectiveFactory mixin
+	getDirectiveDefinitionFunction: (params: IDirectiveAnnotationOptions, target: Function) => angular.IDirectiveFactory
+	getDDO: (params: IDirectiveAnnotationOptions, target: Function) => angular.IDirective
 }
+mixin(DirectiveAnnotation, [DirectiveFactory]);
 
 export function Directive(options: IDirectiveAnnotationOptions) {
 	return AngularAnnotation.getClassDecorator((Constructor: Function) => {

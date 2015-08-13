@@ -4,7 +4,7 @@ enum MetadataType {
 	SERVICE,
 	DIRECTIVE,
 	VIEW,
-	ROUTE_CONFIG
+	STATE_CONFIG
 }
 
 export default MetadataType;

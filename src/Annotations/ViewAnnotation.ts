@@ -3,12 +3,6 @@ import MetadataType from './MetadataType';
 import {DirectiveAnnotation} from './DirectiveAnnotation';
 import {IViewAnnotationOptions} from './AnnotationOptions/IViewAnnotationOptions'
 
-// export interface IViewParams {
-// 	template?: string;
-// 	templateUrl?: string;
-// 	directives?: Function[];  
-// }
-
 export class ViewAnnotation extends Annotation {
 	private params: IViewAnnotationOptions;
 	
@@ -41,6 +35,10 @@ export class ViewAnnotation extends Annotation {
 		}
 		
 		annotation.register(module);
+	}
+	
+	static getViewAnnotation(target: Function) : ViewAnnotation{
+		return <ViewAnnotation>Annotation.getAnnotation(MetadataType.VIEW, target);
 	}
 }
 

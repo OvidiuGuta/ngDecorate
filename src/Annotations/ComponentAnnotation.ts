@@ -5,85 +5,48 @@ import {AngularAnnotation} from './AngularAnnotation';
 import {ViewAnnotation} from './ViewAnnotation';
 import {ServiceAnnotation} from './ServiceAnnotation';
 import {IComponentAnnotationOptions} from './AnnotationOptions/IComponentAnnotationOptions';
+import {DirectiveFactory} from './DirectivesFactory';
+import {mixin} from './Util';
 
-export interface ComponentFunction extends FunctionConstructor {
-	[key: string]: Function;
-	$compile?: Function;
-	$link?: Function;compile?: Function;
-}
-
-export class ComponentAnnotation extends AngularAnnotation {
+export class ComponentAnnotation extends AngularAnnotation implements DirectiveFactory {
 	private module: angular.IModule;
 	private params: IComponentAnnotationOptions;
-	private registered: boolean;
 	private viewAnnotation: ViewAnnotation;
+	ddo: angular.IDirective;
 	
 	constructor(params: IComponentAnnotationOptions, target: Function) {
 		super(MetadataType.DIRECTIVE, target);
 		this.params = params;
-		this.registered = false;
+		this.viewAnnotation = ViewAnnotation.getViewAnnotation(this.target);
 		
-		this.viewAnnotation = this.getViewAnnotation();
-	}
-	
-	register(module: angular.IModule) : angular.IModule {
-		if(this.registered) {
-			return module;
-		}
-		
-		this.registerServices(module);
-		this.viewAnnotation.registerDirectives(module);	
-		
-		this.registered = true;
-		this.attach();
-		
-		return module.directive(this.params.selector, this.getComponentDefinitionFunction());
-	}
-	
-	registerServices(module: angular.IModule) {
-		for(let target of this.params.appInjector) {
-			let serviceAnnotation = <ServiceAnnotation>AngularAnnotation.getAnnotation(MetadataType.SERVICE, target);
-			serviceAnnotation.register(module);
-		}
-	}
-	
-	private getComponentDefinitionFunction(): angular.IDirectiveFactory {
-		let target = this.target;
-		let ddo = this.getDDO();
-		let componentDefinitionFunction = (...injectables: any[]) => {
-			for(let i = 0; i < injectables.length; i++) {
-				let injectableName = componentDefinitionFunction.$inject[i];
-				(<ComponentFunction>target)[injectableName] = injectables[i];
-			}
-			return ddo;
-		}
-		
-		componentDefinitionFunction.$inject = this.params.staticInject;
-		
-		return componentDefinitionFunction;
-	}
-	
-	private getDDO(): angular.IDirective {
-		let ddo: angular.IDirective = angular.extend({}, {
+		this.ddo = {
 				bindToController: true,
-				compile: (<ComponentFunction>this.target).$compile,
-				controller: this.target,
-				controllerAs: this.target.name,
-				link: (<ComponentFunction>this.target).$link,
 				restrinct: 'E',
 				replace: true,
 				scope: true,
 				template: this.viewAnnotation.getTemplate(),
 				templateUrl: this.viewAnnotation.getTemplateUrl()
-			}, this.params.ddo);
-			
-		return ddo;
+			}
 	}
 	
-	getViewAnnotation(): ViewAnnotation{
-		return <ViewAnnotation>AngularAnnotation.getAnnotation(MetadataType.VIEW, this.target);
-	};
+	register(module: angular.IModule) : angular.IModule {
+		if(this.isRegistered()) {
+			return module;
+		}
+		
+		ServiceAnnotation.registerServices(module, this.params.appInjector);
+		this.viewAnnotation.registerDirectives(module);	
+		
+		this.reattach();
+		
+		return module.directive(this.params.selector, this.getDirectiveDefinitionFunction(this.params, this.target));
+	}
+	
+	// From DirectiveFactory mixin
+	getDirectiveDefinitionFunction: (params: IComponentAnnotationOptions, target: Function) => angular.IDirectiveFactory
+	getDDO: (params: IComponentAnnotationOptions, target: Function) => angular.IDirective
 }
+mixin(ComponentAnnotation, [DirectiveFactory]);
 
 export function Component(options: IComponentAnnotationOptions) {
 	return AngularAnnotation.getClassDecorator((Constructor: Function) => {
