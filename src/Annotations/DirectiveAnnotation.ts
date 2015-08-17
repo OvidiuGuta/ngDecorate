@@ -2,6 +2,7 @@
 import * as angular from 'angular';
 import MetadataType from './MetadataType';
 import {AngularAnnotation} from './AngularAnnotation';
+import {ServiceAnnotation} from './ServiceAnnotation';
 import {IDirectiveAnnotationOptions} from './AnnotationOptions/IDirectiveAnnotationOptions';
 import {IComponentAnnotationOptions} from './AnnotationOptions/IComponentAnnotationOptions';
 import {DirectiveFactory} from './DirectivesFactory';
@@ -27,6 +28,7 @@ export class DirectiveAnnotation extends AngularAnnotation implements DirectiveF
 			return module;
 		}
 		
+		ServiceAnnotation.registerServices(module, this.params.appInjector);
 		this.reattach();
 		
 		return module.directive(this.params.selector, this.getDirectiveDefinitionFunction(this.params, this.target));
