@@ -4,6 +4,8 @@ var server = require('gulp-server-livereload');
 var del = require('del');
 var dtsGenarator = require('dts-generator');
 var runSequence = require('run-sequence');
+var karma = require('gulp-karma');
+var ts = require('gulp-typescript');
 
 var webpackConfig = require("./webpack.config.js");
 var config = require('./config');
@@ -79,5 +81,44 @@ gulp.task('serve', function(callback) {
     callback
 	);
 });
+
+function runTests(singleRun, done) {
+    gulp.src(['./node_modules/angular/angular.js', config.PATHS.BUILD_TARGET + '/**/*.js'])
+      .pipe(karma({
+        configFile: 'karma.conf.js',
+        action: (singleRun)? 'run': 'watch',
+        reporters: (singleRun)?['dots', 'html', 'coverage']: ['dots'],
+        preprocessors: (singleRun)?{
+          // source files, that you wanna generate coverage for
+          // do not include tests or libraries
+          // (these files will be instrumented by Istanbul)
+          "./dev/ng-decorate.js": ["coverage"]
+        }: {}
+      }))
+      .on('end', function() {
+        //run some code here
+        done();
+      })
+      .on('error', function (err) {
+        // Make sure failed tests cause gulp to exit non-zero
+        throw err;
+      });
+}
+
+gulp.task('build:test', function() {
+  var tsResult = gulp.src('test/**/*.ts')
+    .pipe(ts({
+        noImplicitAny: true,
+        sourceMap: true
+      }));
+  return tsResult.js.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
+});
+
+gulp.task('watch:test', ['build:test'], function() {
+    gulp.watch('test/*.ts', ['build:test']);
+});
+
+gulp.task('test', ['build:dev', 'build:test'], function (done) { runTests(true /* singleRun */, done) });
+gulp.task('test:auto', ['build:dev', 'build:test', 'watch:test'], function (done) { runTests(false /* singleRun */, done) });
 
 gulp.task('default', ['serve']);
