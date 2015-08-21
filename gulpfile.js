@@ -5,7 +5,6 @@ var del = require('del');
 var dtsGenarator = require('dts-generator');
 var runSequence = require('run-sequence');
 var karma = require('gulp-karma');
-var ts = require('gulp-typescript');
 
 var webpackConfig = require("./webpack.config.js");
 var config = require('./config');
@@ -83,17 +82,20 @@ gulp.task('serve', function(callback) {
 });
 
 function runTests(singleRun, done) {
-    gulp.src(['./node_modules/angular/angular.js', config.PATHS.BUILD_TARGET + '/**/*.js'])
+    var preprocessors = {};
+    if(singleRun) {
+      preprocessors[config.PATHS.TEST_TARGET + '/' + config.NAMES.OUT_FILE_NAME] = ['coverage'];
+    }    
+    
+    gulp.src(['./node_modules/angular/angular.js',
+        './node_modules/angular-mocks/angular-mocks.js',
+        './node_modules/reflect-metadata/Reflect.js',
+        config.PATHS.BUILD_TARGET + '/**/*.js'])
       .pipe(karma({
         configFile: 'karma.conf.js',
         action: (singleRun)? 'run': 'watch',
         reporters: (singleRun)?['dots', 'html', 'coverage']: ['dots'],
-        preprocessors: (singleRun)?{
-          // source files, that you wanna generate coverage for
-          // do not include tests or libraries
-          // (these files will be instrumented by Istanbul)
-          "./dev/ng-decorate.js": ["coverage"]
-        }: {}
+        preprocessors: preprocessors
       }))
       .on('end', function() {
         //run some code here
@@ -106,19 +108,18 @@ function runTests(singleRun, done) {
 }
 
 gulp.task('build:test', function() {
-  var tsResult = gulp.src('test/**/*.ts')
-    .pipe(ts({
-        noImplicitAny: true,
-        sourceMap: true
-      }));
-  return tsResult.js.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
+  gulp.src(config.PATHS.TEST_ENTRY_FILE)
+	  	.pipe(webpack(require(config.PATHS.TEST_WEBPACK_CONFIG_FILE).getConfig(false)))
+	  	.pipe(gulp.dest(config.PATHS.TEST_TARGET));
 });
 
-gulp.task('watch:test', ['build:test'], function() {
-    gulp.watch('test/*.ts', ['build:test']);
+gulp.task('build:test:auto', function() {
+  gulp.src(config.PATHS.TEST_ENTRY_FILE)
+	  	.pipe(webpack(require(config.PATHS.TEST_WEBPACK_CONFIG_FILE).getConfig(true)))
+	  	.pipe(gulp.dest(config.PATHS.TEST_TARGET));
 });
 
 gulp.task('test', ['build:dev', 'build:test'], function (done) { runTests(true /* singleRun */, done) });
-gulp.task('test:auto', ['build:dev', 'build:test', 'watch:test'], function (done) { runTests(false /* singleRun */, done) });
+gulp.task('test:auto', ['build:dev', 'build:test:auto'], function (done) { runTests(false /* singleRun */, done) });
 
 gulp.task('default', ['serve']);

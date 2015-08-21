@@ -1,3 +1,5 @@
+/// <reference path="../../typings/angularjs/angular.d.ts" />
+import * as angular from 'angular'
 import {IDirectiveAnnotationOptions} from './AnnotationOptions/IDirectiveAnnotationOptions';
 import {IComponentAnnotationOptions} from './AnnotationOptions/IComponentAnnotationOptions';
 
@@ -5,7 +7,12 @@ import {IComponentAnnotationOptions} from './AnnotationOptions/IComponentAnnotat
 export interface DirectiveFunction extends FunctionConstructor {
 	[key: string]: Function;
 	$compile?: Function;
-	$link?: Function;compile?: Function;
+	$link?: Function;
+	compile?: Function;
+}
+
+export interface INamedFunction extends Function {
+	name: string
 }
 
 export class DirectiveFactory {
@@ -30,7 +37,7 @@ export class DirectiveFactory {
 		this.ddo.compile= <angular.IDirectiveCompileFn>(<DirectiveFunction>target).$compile;
 		this.ddo.link= <angular.IDirectiveLinkFn>(<DirectiveFunction>target).$link;
 		this.ddo.controller = target;
-		this.ddo.controllerAs = target.name;
+		this.ddo.controllerAs = (<INamedFunction>target).name;
 		
 		let ddo: angular.IDirective = angular.extend({}, this.ddo, params.ddo);
 			

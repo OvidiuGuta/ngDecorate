@@ -42,6 +42,9 @@ export class ServiceAnnotation extends AngularAnnotation {
 	}
 	
 	static registerServices(module: angular.IModule, services: Function[]): void {
+		if(!services) {
+			return;
+		}
 		for(let target of services) {
 			let serviceAnnotation = <ServiceAnnotation>AngularAnnotation.getAnnotation(MetadataType.SERVICE, target);
 			serviceAnnotation.register(module);

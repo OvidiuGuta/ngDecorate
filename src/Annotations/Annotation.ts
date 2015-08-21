@@ -1,3 +1,4 @@
+import {} from 'reflect-metadata';
 import MetadataType from './MetadataType';
 
 export default class Annotation {

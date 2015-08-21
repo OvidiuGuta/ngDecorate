@@ -20,6 +20,7 @@ export class DirectiveAnnotation extends AngularAnnotation implements DirectiveF
 			bindToController: true,
 			restrinct: 'AC',
 			scope: true,
+			replace: false
 		};
 	}
 	

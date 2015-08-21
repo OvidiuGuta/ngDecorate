@@ -2,8 +2,11 @@
 import * as angular from 'angular';
 import MetadataType from './Annotations/MetadataType';
 import {ControllerAnnotation} from './Annotations/ControllerAnnotation';
+import {ServiceAnnotation} from './Annotations/ServiceAnnotation';
 import {StateConfigAnnotation} from './Annotations/StateConfigAnnotation';
+import Annotation from './Annotations/Annotation';
 
+export {Annotation};
 export {Controller} from './Annotations/ControllerAnnotation';
 export {Inject} from './Annotations/InjectAnnotation';
 export {Service} from './Annotations/ServiceAnnotation';
@@ -18,8 +21,16 @@ export function bootstrap(module: angular.IModule, ControllerFunction: Function)
 	}
 	
 	if(!ControllerAnnotation.hasAnnotation(MetadataType.CONTROLLER, ControllerFunction)) {
-		throw new Error('ngDecorate: No conntroller annotation on bootstrap target');
+		throw new Error('ngDecorate: No Service annotation on bootstrap target');
 	}
 	
 	return (<ControllerAnnotation>ControllerAnnotation.getAnnotation(MetadataType.CONTROLLER,  ControllerFunction)).register(module); 
+}
+
+export function bootstrapService(module: angular.IModule, ServiceFunction: Function) : angular.IModule {
+	if(!ServiceAnnotation.hasAnnotation(MetadataType.SERVICE, ServiceFunction)) {
+		throw new Error('ngDecorate: No Service annotation on bootstrap target');
+	}
+	
+	return (<ServiceAnnotation>ServiceAnnotation.getAnnotation(MetadataType.SERVICE,  ServiceFunction)).register(module); 
 }
