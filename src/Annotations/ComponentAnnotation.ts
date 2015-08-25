@@ -15,17 +15,15 @@ export class ComponentAnnotation extends AngularAnnotation implements DirectiveF
 	ddo: angular.IDirective;
 	
 	constructor(params: IComponentAnnotationOptions, target: Function) {
-		super(MetadataType.DIRECTIVE, target);
+		super(MetadataType.COMPONENT, target);
 		this.params = params;
 		this.viewAnnotation = ViewAnnotation.getViewAnnotation(this.target);
 		
 		this.ddo = {
 				bindToController: true,
-				restrinct: 'E',
+				restrict: 'E',
 				replace: true,
 				scope: true,
-				template: this.viewAnnotation.getTemplate(),
-				templateUrl: this.viewAnnotation.getTemplateUrl()
 			}
 	}
 	
@@ -34,9 +32,15 @@ export class ComponentAnnotation extends AngularAnnotation implements DirectiveF
 			return module;
 		}
 		
-		ServiceAnnotation.registerServices(module, this.params.appInjector);
-		this.viewAnnotation.registerDirectives(module);	
+		if(!this.viewAnnotation) {
+			throw new Error(`ngDecorate: No View annotation on class ${this.target}!`);
+		}
 		
+		ServiceAnnotation.registerServices(module, this.params.appInjector);
+		this.viewAnnotation.registerDirectives(module);
+		
+		this.ddo.template = this.viewAnnotation.getTemplate();
+		this.ddo.templateUrl = this.viewAnnotation.getTemplateUrl();
 		this.reattach();
 		
 		return module.directive(this.params.selector, this.getDirectiveDefinitionFunction(this.params, this.target));

@@ -23,6 +23,9 @@ export class ViewAnnotation extends Annotation {
 	}
 	
 	registerDirectives(module: angular.IModule): angular.IModule {
+		if(!this.params.directives) {
+			return;
+		}
 		for(let directive of this.params.directives) {
 			this.registerDirective(module, directive);	
 		}

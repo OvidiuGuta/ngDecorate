@@ -3,7 +3,7 @@
 import {InjectOne, InjectMultiple} from './Fixtures/InjectAnnotatedClass';
 
 export function runTest() {
-	describe("InjectAnnotation tests", function () {
+	describe("InjectAnnotation", function () {
 		
 		it('should have injectables property with one element', function() {
 			let injectAnnotation = Reflect.getMetadata(1, InjectOne);

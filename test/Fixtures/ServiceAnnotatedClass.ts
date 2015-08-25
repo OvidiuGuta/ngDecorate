@@ -39,3 +39,12 @@ export class NoFactoryMethod {
 
 bootstrapService(ngDecorateTest, SimpleService);
 bootstrapService(ngDecorateTest, SimpleFactory);
+
+@Service({
+	name: 'SimpleService2'
+})
+export class SimpleService2 {
+	constructor() {
+		
+	}
+}

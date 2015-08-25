@@ -8,7 +8,7 @@ import {ViewAnnotatedClass, ViewAnnotatedClassWithDirectives} from './Fixtures/V
 import {SimpleDirective} from './Fixtures/DirectiveAnnotatedClass';
 
 export function runTest() {
-	describe("ViewAnnotation tests", function () {
+	describe("ViewAnnotation", function () {
 		beforeEach(angular.mock.module('ngDecorate.test'));
 		
 		it('should get template and templateUrl properties', function() {
@@ -32,6 +32,13 @@ export function runTest() {
 			
 			let directiveAnnotation = Reflect.getMetadata(3, SimpleDirective);
 			expect(directiveAnnotation.isRegistered()).toBeTruthy();
+		});
+		
+		it('should register no directives', function() {
+			let viewAnnotation = Reflect.getMetadata(4, ViewAnnotatedClass);
+			spyOn(viewAnnotation, 'registerDirective');
+			viewAnnotation.registerDirectives(ngDecorateTest);
+			expect(viewAnnotation.registerDirective).not.toHaveBeenCalled();
 		});
 	});
 }

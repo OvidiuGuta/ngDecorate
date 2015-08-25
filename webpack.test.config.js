@@ -28,7 +28,7 @@ var getConfig = function(watch) {
       "reflect-metadata": 'Reflect',
       "ngDecorate/ngDecorate": 'ngDecorate'
     }
-};
+  };
 }
 
 module.exports = {

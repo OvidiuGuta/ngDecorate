@@ -31,6 +31,14 @@ gulp.task('build:dev', [], function(callback) {
 	  	.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
 });
 
+gulp.task('build:prod', [], function() {
+  console.log('Building library in prod mode...');
+  webpackConfig.watch = false;
+	return gulp.src(config.PATHS.ENTRY_FILE_PATH)
+	  	.pipe(webpack( webpackConfig))
+	  	.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
+});
+
 gulp.task('build:dts', [], function(callback) {
   dtsGenarator.generate({
     name: config.NAMES.PACKAGE_NAME,
@@ -88,6 +96,7 @@ function runTests(singleRun, done) {
     }    
     
     gulp.src(['./node_modules/angular/angular.js',
+        './node_modules/angular-ui-router/build/angular-ui-router.js',
         './node_modules/angular-mocks/angular-mocks.js',
         './node_modules/reflect-metadata/Reflect.js',
         config.PATHS.BUILD_TARGET + '/**/*.js'])
@@ -119,7 +128,7 @@ gulp.task('build:test:auto', function() {
 	  	.pipe(gulp.dest(config.PATHS.TEST_TARGET));
 });
 
-gulp.task('test', ['build:dev', 'build:test'], function (done) { runTests(true /* singleRun */, done) });
+gulp.task('test', ['build:prod', 'build:test'], function (done) { runTests(true /* singleRun */, done) });
 gulp.task('test:auto', ['build:dev', 'build:test:auto'], function (done) { runTests(false /* singleRun */, done) });
 
 gulp.task('default', ['serve']);

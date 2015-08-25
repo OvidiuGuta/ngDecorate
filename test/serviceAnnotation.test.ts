@@ -5,10 +5,10 @@
 import * as angular from 'angular'
 import ngDecorateTest from './Fixtures/module';
 import {bootstrapService} from 'ngDecorate/ngDecorate';
-import {SimpleService, SimpleFactory, NoFactoryMethod} from './Fixtures/ServiceAnnotatedClass';
+import {SimpleService, SimpleFactory, NoFactoryMethod, SimpleService2} from './Fixtures/ServiceAnnotatedClass';
 
 export function runTest() {
-	describe("ServiceAnnotation tests", function () {
+	describe("ServiceAnnotation", function () {
 		beforeEach(angular.mock.module('ngDecorate.test'));
 		
 		let $injector: any, $rootScope: any, $timeout: any;
@@ -94,6 +94,21 @@ export function runTest() {
 		it('should throw error if no static $factory method is provided for factory service', function() {
 			let serviceAnnotation = Reflect.getMetadata(2, NoFactoryMethod);
 			expect(function() {serviceAnnotation.register();}).toThrow();
+		});
+		
+		it('should register services', function() {
+			let serviceAnnotation = Reflect.getMetadata(2, SimpleService2);
+			
+			expect(serviceAnnotation.isRegistered()).toBeFalsy();
+			serviceAnnotation.constructor.registerServices(ngDecorateTest, [SimpleService2]);			
+			expect(serviceAnnotation.isRegistered()).toBeTruthy();
+		});
+		
+		it('should throw when trying to bootstrap without Service annotation', function() {
+			let emptyFunction = () => {};
+			expect(function() {
+				bootstrapService(ngDecorateTest, emptyFunction)
+			}).toThrow(new Error(`ngDecorate: No Service annotation on bootstrap target ${emptyFunction}`));
 		});
 	});
 }

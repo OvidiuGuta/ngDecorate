@@ -4,7 +4,8 @@ enum MetadataType {
 	SERVICE,
 	DIRECTIVE,
 	VIEW,
-	STATE_CONFIG
+	STATE_CONFIG,
+	COMPONENT
 }
 
 export default MetadataType;

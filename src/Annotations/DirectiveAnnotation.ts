@@ -18,7 +18,7 @@ export class DirectiveAnnotation extends AngularAnnotation implements DirectiveF
 		this.params = params;
 		this.ddo = {
 			bindToController: true,
-			restrinct: 'AC',
+			restrict: 'AC',
 			scope: true,
 			replace: false
 		};

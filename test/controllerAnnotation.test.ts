@@ -8,7 +8,7 @@ import ngDecorateTest from './Fixtures/module';
 import {TestController, TestControllerRegistered} from './Fixtures/ControllerAnnotatedClass';
 
 export function runTest() {
-	describe("ControllerAnnotation tests", function () {
+	describe("ControllerAnnotation", function () {
 		beforeEach(angular.mock.module('ngDecorate.test'));
 		
 		let $rootScope: any, $controller: any;
@@ -46,7 +46,7 @@ export function runTest() {
 			expect(testController).toBeDefined();
 		});
 		
-		it('should not register controlleron angular module twice', function() {
+		it('should not register controller on angular module twice', function() {
 			var testController = $controller('TestCtrlRegistered', { $scope: $rootScope.$new() });
 			expect(testController).toBeDefined();
 			
@@ -57,6 +57,12 @@ export function runTest() {
 			
 			expect(controllerAnnotation).toBeDefined();
 			expect(controllerAnnotation.reattach).not.toHaveBeenCalled();
+		});
+		
+		it('should throw when trying to bootstrap without Controller annotation', function() {
+			expect(function() {
+				bootstrap(ngDecorateTest, () => {})
+			}).toThrow()
 		});
 	});
 }

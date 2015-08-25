@@ -20,8 +20,15 @@ export class StateConfigAnnotation extends AngularAnnotation {
 			return module;
 		}
 		
-		let stateConfig: angular.ui.IState = this.params.config;
+		if(!AngularAnnotation.hasAnnotation(MetadataType.CONTROLLER, this.target)) {
+			throw new Error(`ngDecorate: No Controller annotation on class ${this.target}!`);
+		}
 		
+		if(!AngularAnnotation.hasAnnotation(MetadataType.VIEW, this.target)) {
+			throw new Error(`ngDecorate: No View annotation on class ${this.target}!`);
+		}
+		
+		let stateConfig: angular.ui.IState = this.params.config;
 		stateConfig.controller = stateConfig.controllerAs = ControllerAnnotation.getControllerAnnotation(this.target).getName();
 		
 		let viewAnnotation = ViewAnnotation.getViewAnnotation(this.target);

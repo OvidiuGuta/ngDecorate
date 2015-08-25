@@ -34,12 +34,12 @@ export class DirectiveFactory {
 	}
 	
 	getDDO(params: IDirectiveAnnotationOptions | IComponentAnnotationOptions, target: Function): angular.IDirective {
-		this.ddo.compile= <angular.IDirectiveCompileFn>(<DirectiveFunction>target).$compile;
-		this.ddo.link= <angular.IDirectiveLinkFn>(<DirectiveFunction>target).$link;
+		this.ddo.compile = <angular.IDirectiveCompileFn>(<DirectiveFunction>target).$compile;
+		this.ddo.link = <angular.IDirectiveLinkFn>(<DirectiveFunction>target).$link;
 		this.ddo.controller = target;
 		this.ddo.controllerAs = (<INamedFunction>target).name;
 		
-		let ddo: angular.IDirective = angular.extend({}, this.ddo, params.ddo);
+		let ddo: angular.IDirective = angular.extend({}, this.ddo, params);
 			
 		return ddo;
 	}

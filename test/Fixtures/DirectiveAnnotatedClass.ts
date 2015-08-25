@@ -8,7 +8,16 @@ import {Directive} from 'ngDecorate/ngDecorate'
 	selector: 'addClass'
 })
 export class SimpleDirective {
+	static name: string;
 	static $link(scope: angular.IScope, elem: angular.IAugmentedJQuery, attrs: any) {
 		elem.addClass('testClass'); 
 	}
+}
+
+@Directive({
+	selector: 'dirictiveWithInjects',
+	staticInject: ['staticInjectable']
+}) 
+export class DirectiveWithInjects {
+	static staticInjectable: string;
 }
