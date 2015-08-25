@@ -10,5 +10,5 @@ before_script:
   - npm install -g tsd
   - tsd reinstall
 after_script:
-  - codeclimate-test-reporter < lcov.info
+  - codeclimate-test-reporter < /reports/coverage/Chromium 37.0.2062 (Ubuntu 0.0.0)/lcov.info
 script: gulp test 
