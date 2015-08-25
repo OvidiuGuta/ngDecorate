@@ -1,8 +1,7 @@
 'use strict';
 
 module.exports = function(config) {
-
-  config.set({
+  var configuration = {
     autoWatch : false,
 
     frameworks: ['jasmine'],
@@ -12,6 +11,13 @@ module.exports = function(config) {
     // the default configuration
     htmlReporter: {
       outputFile: './reports/unitTestsReport.html' // where to put the reports
+    },
+    
+     customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
     },
 
     // optionally, configure the reporter
@@ -33,5 +39,11 @@ module.exports = function(config) {
         'karma-htmlfile-reporter',
         'karma-coverage'
     ]
-  });
+  }
+
+  if(process.env.TRAVIS){
+    configuration.browsers = ['Chrome_travis_ci'];
+  }
+  
+  config.set(configuration);
 };
