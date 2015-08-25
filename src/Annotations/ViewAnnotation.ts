@@ -1,8 +1,9 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular'
-import Annotation from './Annotation';
+import {Annotation} from './Annotation';
 import MetadataType from './MetadataType';
 import {DirectiveAnnotation} from './DirectiveAnnotation';
+import {ComponentAnnotation} from './ComponentAnnotation';
 import {IViewAnnotationOptions} from './AnnotationOptions/IViewAnnotationOptions'
 
 export class ViewAnnotation extends Annotation {
@@ -33,13 +34,14 @@ export class ViewAnnotation extends Annotation {
 		return module;
 	}
 	
-	registerDirective(module: angular.IModule, directive: Function) {
-		let annotation: DirectiveAnnotation;
+	registerDirective(module: angular.IModule, directive: Function): void {
 		if(Annotation.hasAnnotation(MetadataType.DIRECTIVE, directive)) {
-			annotation = <DirectiveAnnotation>Annotation.getAnnotation(MetadataType.DIRECTIVE, directive);
+			(<DirectiveAnnotation>Annotation.getAnnotation(MetadataType.DIRECTIVE, directive)).register(module);
 		}
 		
-		annotation.register(module);
+		if(Annotation.hasAnnotation(MetadataType.COMPONENT, directive)) {
+			(<ComponentAnnotation>Annotation.getAnnotation(MetadataType.COMPONENT, directive)).register(module);
+		}
 	}
 	
 	static getViewAnnotation(target: Function) : ViewAnnotation{

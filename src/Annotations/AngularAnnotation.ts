@@ -1,6 +1,6 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular';
-import Annotation from './Annotation';
+import {Annotation} from './Annotation';
 import MetadataType from './MetadataType';
 import {InjectAnnotation} from './InjectAnnotation';
 

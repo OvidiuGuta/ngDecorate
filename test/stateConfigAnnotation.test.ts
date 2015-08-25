@@ -5,7 +5,9 @@
 import * as angular from 'angular'
 import {bootstrap} from 'ngDecorate/ngDecorate';
 import ngDecorateTest from './Fixtures/module';
-import {SimpleStateConfig, StateConfigNoController, StateConfigNoView, BootstrapedStateConfig} from './Fixtures/StateConfigAnnotatedClass';
+import {SimpleStateConfig, StateConfigNoController, 
+	StateConfigNoView, BootstrapedStateConfig,
+	SimpleStateConfigWithDirectives} from './Fixtures/StateConfigAnnotatedClass';
 
 export function runTest() {
 	describe("StateConfigAnnotation", function () {
@@ -37,10 +39,21 @@ export function runTest() {
 			expect(stateConfigAnnotation.reattach).not.toHaveBeenCalled();
 		});
 		
+		it('should register directives stateConfig', function() {
+			let stateConfigAnnotation = Reflect.getMetadata(5, SimpleStateConfigWithDirectives);
+			let viewAnnotation = Reflect.getMetadata(4, SimpleStateConfigWithDirectives);
+			
+			spyOn(viewAnnotation, 'registerDirective');
+			stateConfigAnnotation.register(ngDecorateTest);
+			
+			expect(viewAnnotation.registerDirective).toHaveBeenCalled();
+			expect(viewAnnotation.registerDirective.calls.count()).toBe(2);
+		});
+		
 		it('should throw if target class has no Controller annotation', function() {
 			let stateConfigAnnotation = Reflect.getMetadata(5, StateConfigNoController);
-			expect(function() { 
-				stateConfigAnnotation.register(ngDecorateTest) 
+			expect(function() {
+				stateConfigAnnotation.register(ngDecorateTest)
 				}).toThrow(new Error(`ngDecorate: No Controller annotation on class ${StateConfigNoController}!`));
 		});
 		

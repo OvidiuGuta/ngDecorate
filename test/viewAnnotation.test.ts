@@ -4,8 +4,9 @@
 /// <reference path="../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular'
 import ngDecorateTest from './Fixtures/module';
-import {ViewAnnotatedClass, ViewAnnotatedClassWithDirectives} from './Fixtures/ViewAnnotatedClass';
+import {ViewAnnotatedClass, ViewAnnotatedClassWithDirectives, ViewAnnotatedClassWithComponent} from './Fixtures/ViewAnnotatedClass';
 import {SimpleDirective} from './Fixtures/DirectiveAnnotatedClass';
+import {SimpleComponent} from './Fixtures/ComponentAnnotatedClass';
 
 export function runTest() {
 	describe("ViewAnnotation", function () {
@@ -32,6 +33,14 @@ export function runTest() {
 			
 			let directiveAnnotation = Reflect.getMetadata(3, SimpleDirective);
 			expect(directiveAnnotation.isRegistered()).toBeTruthy();
+		});
+		
+		it('should register component directives', function() {
+			let viewAnnotation = Reflect.getMetadata(4, ViewAnnotatedClassWithComponent);
+			viewAnnotation.registerDirectives(ngDecorateTest);
+			
+			let componentAnnotation = Reflect.getMetadata(6, SimpleComponent);
+			expect(componentAnnotation.isRegistered()).toBeTruthy();
 		});
 		
 		it('should register no directives', function() {

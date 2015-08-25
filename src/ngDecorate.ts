@@ -4,17 +4,6 @@ import MetadataType from './Annotations/MetadataType';
 import {ControllerAnnotation} from './Annotations/ControllerAnnotation';
 import {ServiceAnnotation} from './Annotations/ServiceAnnotation';
 import {StateConfigAnnotation} from './Annotations/StateConfigAnnotation';
-import Annotation from './Annotations/Annotation';
-
-export {Annotation};
-export {AngularAnnotation} from './Annotations/AngularAnnotation';
-export {Controller} from './Annotations/ControllerAnnotation';
-export {Inject} from './Annotations/InjectAnnotation';
-export {Service} from './Annotations/ServiceAnnotation';
-export {View} from './Annotations/ViewAnnotation';
-export {StateConfig} from './Annotations/StateConfigAnnotation';
-export {Directive} from './Annotations/DirectiveAnnotation';
-export {Component} from './Annotations/ComponentAnnotation';
 
 export function bootstrap(module: angular.IModule, ControllerFunction: Function) : angular.IModule {
 	if(StateConfigAnnotation.hasAnnotation(MetadataType.STATE_CONFIG, ControllerFunction)) {
@@ -35,3 +24,13 @@ export function bootstrapService(module: angular.IModule, ServiceFunction: Funct
 	
 	return (<ServiceAnnotation>ServiceAnnotation.getAnnotation(MetadataType.SERVICE,  ServiceFunction)).register(module); 
 }
+
+export {Annotation} from './Annotations/Annotation';
+export {AngularAnnotation} from './Annotations/AngularAnnotation';
+export {Controller} from './Annotations/ControllerAnnotation';
+export {Inject} from './Annotations/InjectAnnotation';
+export {Service} from './Annotations/ServiceAnnotation';
+export {View} from './Annotations/ViewAnnotation';
+export {StateConfig} from './Annotations/StateConfigAnnotation';
+export {Directive} from './Annotations/DirectiveAnnotation';
+export {Component} from './Annotations/ComponentAnnotation';

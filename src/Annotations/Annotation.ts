@@ -1,7 +1,8 @@
+/// <reference path="../../node_modules/reflect-metadata/reflect-metadata.d.ts" />
 import {} from 'reflect-metadata';
 import MetadataType from './MetadataType';
 
-export default class Annotation {
+export class Annotation {
 	target: Function;
 	type: MetadataType;
 	

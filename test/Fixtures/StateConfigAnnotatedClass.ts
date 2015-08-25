@@ -3,6 +3,8 @@
 import * as angular from 'angular';
 import ngDecorateTest from './module';
 import {bootstrap} from 'ngDecorate/ngDecorate';
+import {SimpleDirective} from './DirectiveAnnotatedClass';
+import {SimpleComponent} from './ComponentAnnotatedClass';
 import {StateConfig, View, Controller} from 'ngDecorate/ngDecorate';
 
 @StateConfig({
@@ -69,3 +71,22 @@ export class BootstrapedStateConfig {
 }
 
 bootstrap(ngDecorateTest, BootstrapedStateConfig);
+
+@StateConfig({
+	name: 'simpleStateConfigWithDirectives',
+	config: {
+		url: '/simpleStateConfigWithDirectives'
+	}
+})
+@Controller({
+	name: 'SimpleStateConfigWithDirectivesController'
+})
+@View({
+	templete: 'SimpleStateConfigWithDirectivesTemplate',
+	directives: [SimpleDirective, SimpleComponent]
+})
+export class SimpleStateConfigWithDirectives {
+	constructor() {
+		
+	}
+}

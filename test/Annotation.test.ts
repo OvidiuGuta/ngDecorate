@@ -8,20 +8,20 @@ export function runTest() {
 		
 		it('should create and annotate annotation metadata', function() {
 			let target = () => {};
-			let annotation = new Annotation('myannotation', target);
+			let annotation = new Annotation(0, target);
 			Annotation.annotate(annotation);
 			
-			expect(Annotation.hasAnnotation('myannotation', target)).toBeTruthy();
-			expect(Annotation.getAnnotation('myannotation', target)).toBe(annotation);
+			expect(Annotation.hasAnnotation(0, target)).toBeTruthy();
+			expect(Annotation.getAnnotation(0, target)).toBe(annotation);
 		});
 		
 		it('should return true if target has metadata', function() {
 			let target = () => {};
-			let annotation = new Annotation('myannotation', target);
+			let annotation = new Annotation(0, target);
 			annotation.attach();
 			
-			expect(Annotation.hasAnnotation('myannotation', target)).toBeTruthy();
-			expect(Annotation.getAnnotation('myannotation', target)).toBe(annotation);
+			expect(Annotation.hasAnnotation(0, target)).toBeTruthy();
+			expect(Annotation.getAnnotation(0, target)).toBe(annotation);
 		});
 		
 		it('should throw if decorator is not on a class', function() {

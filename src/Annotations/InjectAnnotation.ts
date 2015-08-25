@@ -1,4 +1,4 @@
-import Annotation from './Annotation';
+import {Annotation} from './Annotation';
 import MetadataType from './MetadataType';
 
 export class InjectAnnotation extends Annotation {

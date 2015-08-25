@@ -19,7 +19,7 @@ export class DirectiveFactory {
 	ddo: angular.IDirective;
 	
 	getDirectiveDefinitionFunction(params: IDirectiveAnnotationOptions | IComponentAnnotationOptions, target: Function): angular.IDirectiveFactory {
-		let ddo = this.getDDO(params, target);
+		let ddo = this.getDDO(params.ddo, target);
 		let directiveDefinitionFunction = (...injectables: any[]) => {
 			for(let i = 0; i < injectables.length; i++) {
 				let injectableName = directiveDefinitionFunction.$inject[i];
@@ -33,7 +33,7 @@ export class DirectiveFactory {
 		return directiveDefinitionFunction;
 	}
 	
-	getDDO(params: IDirectiveAnnotationOptions | IComponentAnnotationOptions, target: Function): angular.IDirective {
+	getDDO(params: angular.IDirective, target: Function): angular.IDirective {
 		this.ddo.compile = <angular.IDirectiveCompileFn>(<DirectiveFunction>target).$compile;
 		this.ddo.link = <angular.IDirectiveLinkFn>(<DirectiveFunction>target).$link;
 		this.ddo.controller = target;

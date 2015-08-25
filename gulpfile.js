@@ -31,7 +31,7 @@ gulp.task('build:dev', [], function(callback) {
 	  	.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
 });
 
-gulp.task('build:prod', [], function() {
+gulp.task('build:prod', ['build:dts'], function() {
   console.log('Building library in prod mode...');
   webpackConfig.watch = false;
 	return gulp.src(config.PATHS.ENTRY_FILE_PATH)
@@ -116,7 +116,7 @@ function runTests(singleRun, done) {
       });
 }
 
-gulp.task('build:test', function() {
+gulp.task('build:test', ['build:dts'], function() {
   gulp.src(config.PATHS.TEST_ENTRY_FILE)
 	  	.pipe(webpack(require(config.PATHS.TEST_WEBPACK_CONFIG_FILE).getConfig(false)))
 	  	.pipe(gulp.dest(config.PATHS.TEST_TARGET));

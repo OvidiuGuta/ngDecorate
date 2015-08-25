@@ -1,6 +1,7 @@
 /// <reference path="../../dev/ngDecorate.d.ts"/>
 import {View} from 'ngDecorate/ngDecorate';
 import {SimpleDirective} from './DirectiveAnnotatedClass';
+import {SimpleComponent} from './ComponentAnnotatedClass';
 
 
 @View({
@@ -18,5 +19,13 @@ export class ViewAnnotatedClass {
 	directives: [SimpleDirective]
 })
 export class ViewAnnotatedClassWithDirectives {
+	
+}
+
+@View({
+	template: 'template',
+	directives: [SimpleComponent]
+})
+export class ViewAnnotatedClassWithComponent {
 	
 }
