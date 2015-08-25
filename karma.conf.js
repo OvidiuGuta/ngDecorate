@@ -1,3 +1,4 @@
+/// <reference path="typings/node/node.d.ts"/>
 'use strict';
 
 module.exports = function(config) {
@@ -22,7 +23,7 @@ module.exports = function(config) {
 
     // optionally, configure the reporter
     coverageReporter: {
-      type : 'html',
+      type : 'lcov',
       dir : './reports/coverage'
     },
 
