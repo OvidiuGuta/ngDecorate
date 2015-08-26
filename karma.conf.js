@@ -40,7 +40,7 @@ module.exports = function(config) {
         'karma-htmlfile-reporter',
         'karma-coverage'
     ]
-  }
+  };
 
   if(process.env.TRAVIS){
     configuration.browsers = ['Chrome_travis_ci'];

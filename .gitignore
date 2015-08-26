@@ -3,7 +3,7 @@
 ######################
 /node_modules
 /typings
-/dev
+/dist
 /reports
 
 

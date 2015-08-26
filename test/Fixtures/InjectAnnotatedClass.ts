@@ -1,4 +1,4 @@
-/// <reference path="../../dev/ngDecorate.d.ts"/>
+/// <reference path="../../dist/ngDecorate.d.ts"/>
 import {Inject} from 'ngDecorate/ngDecorate';
 
 @Inject('inject1')

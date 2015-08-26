@@ -1,4 +1,4 @@
-/// <reference path="../../dev/ngDecorate.d.ts"/>
+/// <reference path="../../dist/ngDecorate.d.ts"/>
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 import * as angular from 'angular'
 import {Component, View, Inject} from 'ngDecorate/ngDecorate'

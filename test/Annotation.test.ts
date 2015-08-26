@@ -1,5 +1,5 @@
 /// <reference path="../typings/jasmine/jasmine.d.ts"/>
-/// <reference path="../dev/ngDecorate.d.ts"/>
+/// <reference path="../dist/ngDecorate.d.ts"/>
 import {Annotation, AngularAnnotation} from 'ngDecorate/ngDecorate';
 import ngDecorateTest from './Fixtures/module';
 

@@ -1,4 +1,4 @@
-/// <reference path="../../dev/ngDecorate.d.ts"/>
+/// <reference path="../../dist/ngDecorate.d.ts"/>
 import {View} from 'ngDecorate/ngDecorate';
 import {SimpleDirective} from './DirectiveAnnotatedClass';
 import {SimpleComponent} from './ComponentAnnotatedClass';

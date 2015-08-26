@@ -1,5 +1,5 @@
 var gulp = require("gulp");
-var webpack = require('webpack-stream')
+var webpack = require('webpack-stream');
 var server = require('gulp-server-livereload');
 var del = require('del');
 var dtsGenarator = require('dts-generator');
@@ -10,36 +10,44 @@ var webpackConfig = require("./webpack.config.js");
 var config = require('./config');
 
 var firstRun = true;
-gulp.task('build:dev', [], function(callback) {
+gulp.task('compile:dev', [], function(callback) {
   console.log('Building library in dev mode...');
 	gulp.src(config.PATHS.ENTRY_FILE_PATH)
-	  	.pipe(webpack( webpackConfig, null, function(err, stats) {
+	  	.pipe(webpack( webpackConfig.getConfig(false, true), null, function() {
         if(firstRun) {
            firstRun = false;
            runSequence(
-        		'build:dts', 
-            'build:copy',
+        		'compile:dts', 
+            'compile:copy',
             callback
       	   );
         } else {
           runSequence(
-        		'build:dts', 
-            'build:copy'
+        		'compile:dts', 
+            'compile:copy'
       	  );
         }        
       }))
 	  	.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
 });
 
-gulp.task('build:prod', ['build:dts'], function() {
-  console.log('Building library in prod mode...');
+gulp.task('compile:prod:min', ['compile:dts'], function() {
+  console.log('Building library in prod mode minified...');
   webpackConfig.watch = false;
 	return gulp.src(config.PATHS.ENTRY_FILE_PATH)
-	  	.pipe(webpack( webpackConfig))
+	  	.pipe(webpack( webpackConfig.getConfig(true, false) ))
 	  	.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
 });
 
-gulp.task('build:dts', [], function(callback) {
+gulp.task('compile:prod', ['compile:dts'], function() {
+  console.log('Building library in prod mode...');
+  webpackConfig.watch = false;
+	return gulp.src(config.PATHS.ENTRY_FILE_PATH)
+	  	.pipe(webpack( webpackConfig.getConfig(false, false) ))
+	  	.pipe(gulp.dest(config.PATHS.BUILD_TARGET));
+});
+
+gulp.task('compile:dts', [], function(callback) {
   dtsGenarator.generate({
     name: config.NAMES.PACKAGE_NAME,
     baseDir: config.PATHS.SOURCE_FOLDER,
@@ -50,12 +58,12 @@ gulp.task('build:dts', [], function(callback) {
   });
 });
 
-gulp.task('build:copy', [], function() {
+gulp.task('compile:copy', [], function() {
     return gulp.src(config.GLOBS.BUILD_COPY_SOURCE)
       .pipe(gulp.dest(config.PATHS.EXAMPLE_BUILD_TARGET));
 });
 
-gulp.task('build:example', function() {
+gulp.task('compile:example', function() {
   console.log('Building example in dev mode...');
 	return gulp.src(config.PATHS.EXAMPLE_ENTRY_FILE_PATH)
 	  	.pipe(webpack( require(config.PATHS.EXAMPLE_WEBPACK_CONFIG_FILE_PATH) ))
@@ -83,8 +91,8 @@ gulp.task('serve:example', [], function() {
 gulp.task('serve', function(callback) {
 	runSequence(
 		'clean',   
-		'build:dev',
-    ['build:example', 'serve:example'],
+		'compile:dev',
+    ['compile:example', 'serve:example'],
     callback
 	);
 });
@@ -116,19 +124,38 @@ function runTests(singleRun, done) {
       });
 }
 
-gulp.task('build:test', ['build:dts'], function() {
+gulp.task('compile:test', ['compile:dts'], function() {
   gulp.src(config.PATHS.TEST_ENTRY_FILE)
 	  	.pipe(webpack(require(config.PATHS.TEST_WEBPACK_CONFIG_FILE).getConfig(false)))
 	  	.pipe(gulp.dest(config.PATHS.TEST_TARGET));
 });
 
-gulp.task('build:test:auto', function() {
+gulp.task('compile:test:auto', function() {
   gulp.src(config.PATHS.TEST_ENTRY_FILE)
 	  	.pipe(webpack(require(config.PATHS.TEST_WEBPACK_CONFIG_FILE).getConfig(true)))
 	  	.pipe(gulp.dest(config.PATHS.TEST_TARGET));
 });
 
-gulp.task('test', ['build:prod', 'build:test'], function (done) { runTests(true /* singleRun */, done) });
-gulp.task('test:auto', ['build:dev', 'build:test:auto'], function (done) { runTests(false /* singleRun */, done) });
+gulp.task('test', ['compile:prod', 'compile:test'], function (done) { runTests(true /* singleRun */, done) });
+gulp.task('test:auto', ['compile:dev', 'compile:test:auto'], function (done) { runTests(false /* singleRun */, done) });
+
+gulp.task('build:dev', function(callback) {
+  runSequence(
+  	'clean',
+    'compile:dts',
+    'compile:dev',
+    callback
+  );
+});
+
+gulp.task('build:prod', function(callback) {
+  runSequence(
+  	'clean',
+    'compile:dts',
+    'compile:prod',
+    'compile:prod:min',
+    callback
+  );
+})
 
 gulp.task('default', ['serve']);

@@ -29,8 +29,8 @@ var getConfig = function(watch) {
       "ngDecorate/ngDecorate": 'ngDecorate'
     }
   };
-}
+};
 
 module.exports = {
   getConfig: getConfig
-}
+};

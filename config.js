@@ -6,13 +6,14 @@ var PACKAGE_NAME = 'ngDecorate',
 	ENTRY_FILE_NAME = PACKAGE_NAME + '.ts',
 	DTS_FILE_NAME = PACKAGE_NAME + '.d.ts',
 	OUT_FILE_NAME = PACKAGE_NAME + '.js',
+	OUT_FILE_NAME_MIN = PACKAGE_NAME + '.min.js',
 	TEST_ENTRY_FILE_NAME = PACKAGE_NAME + '.test.ts',
-	TEST_OUT_FILE_NAME = ENTRY_FILE_NAME + '.test.js',
+	TEST_OUT_FILE_NAME = PACKAGE_NAME + '.test.js',
 	
 	// PATHS for library
 	SOURCE_FOLDER = path.join(__dirname, 'src'),
 	ENTRY_FILE_PATH = path.join(SOURCE_FOLDER, ENTRY_FILE_NAME),
-	BUILD_TARGET = path.join(__dirname, 'dev'),
+	BUILD_TARGET = path.join(__dirname, 'dist'),
 	DTS_TARGET = path.join(BUILD_TARGET, DTS_FILE_NAME),
 	TEST_ENTRY_FILE = path.join(__dirname, 'test', TEST_ENTRY_FILE_NAME),
 	TEST_TARGET = path.join(BUILD_TARGET),
@@ -34,6 +35,7 @@ module.exports = {
 		PACKAGE_NAME: PACKAGE_NAME,
 		ENTRY_FILE_NAME: ENTRY_FILE_NAME,
 		OUT_FILE_NAME: OUT_FILE_NAME,
+		OUT_FILE_NAME_MIN: OUT_FILE_NAME_MIN,
 		TEST_OUT_FILE_NAME: TEST_OUT_FILE_NAME
 	},
 	PATHS: {
@@ -62,4 +64,4 @@ module.exports = {
 		PORT: 3000,
 		OPEN: true	
 	}
-}
+};

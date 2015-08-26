@@ -1,4 +1,4 @@
-/// <reference path="../../dev/ngDecorate.d.ts"/>
+/// <reference path="../../dist/ngDecorate.d.ts"/>
 import ngDecorateTest from './module';
 import {Service, bootstrapService} from 'ngDecorate/ngDecorate';
 
